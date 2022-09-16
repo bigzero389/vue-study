@@ -1,4 +1,6 @@
 # vuedongsan
+- directory structure
+/Code/vue-study/vuedongsan
 
 ## Project setup
 ```
