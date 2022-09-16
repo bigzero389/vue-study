@@ -3,8 +3,8 @@
 
   <div class="black-bg" v-if="popup">
     <div class="white-bg">
-      <h4>{{ product }}</h4>
-      <p>{{ detail }}</p>
+      <h4>{{ product.title }}</h4>
+      <p>{{ product.content }}</p>
       <button @click="popup=false">close</button>
     </div>
   </div>
@@ -13,34 +13,14 @@
     <a v-for="(menu, i) in menus" :key="i">{{ menu }}</a>
   </div>
 
-  <div class="price-list">
-<!-- 
-    <div v-for="(product, i) in products" :key="i">
-      <h4>{{ products[i] }}</h4>
-      <p>{{ prices[i] }} 만원</p>
-    </div>
- -->
-    <div v-for="(product,i) in products" :key="i">
-      <!-- <img v-bind:src="`./assets/room${i}.jpg`" class="room-img"> -->
-      <!-- <img src="./assets/room0.jpg" class="room-img"> -->
-      <img :src="require(`./assets/room${i}.jpg`)" class="room-img">
-      <h4 @click="getDetail(i)">{{ products[i] }}</h4>
-      <p>{{ prices[i] }} 만원</p>
-      <button @click="addReport(i)">허위매물신고</button> <span>신고수: {{ reports[i] }}</span>
-    </div>
-    <!-- <div>
-      <img src="./assets/room1.jpg" class="room-img">
-      <h4>{{ products[1] }}</h4>
-      <p>{{ prices[1] }} 만원</p>
-      <button @click="addReport(1)">허위매물신고</button> <span>신고수: {{ reports[1] }}</span>
-    </div>
-    <div>
-      <img src="./assets/room2.jpg" class="room-img">
-      <h4>{{ products[2] }}</h4>
-      <p>{{ prices[2] }} 만원</p>
-      <button @click="addReport(2)">허위매물신고</button> <span>신고수: {{ reports[2] }}</span>
-    </div> -->
-
+  <div v-for="(product,i) in products" :key="i" class="price-list">
+    <!-- <img v-bind:src="`./assets/room${i}.jpg`" class="room-img"> -->
+    <!-- <img src="./assets/room0.jpg" class="room-img"> -->
+    <!-- <img :src="require(`./assets/room${i}.jpg`)" class="room-img"> -->
+    <img :src="product.image" class="room-img">
+    <h4 @click="getDetail(product)">{{ product.title }}</h4>
+    <p>{{ product.price }} 만원</p>
+    <button @click="addReport(i)">허위매물신고</button> <span>신고수: {{ products[i].report }}</span>
   </div>
 
 </div>
@@ -54,23 +34,21 @@
     data() {
       return {
         product: '',
-        detail: '',
         popup: false,
-        reports: [0, 0, 0],
-        prices: [50, 60, 80],
-        products: ['역삼동원룸', '천호동원룸', '마포구원룸'],
-        details: ['역삼동원룸 상세','천호동원룸 상세','마포구원룸 상세'],
+        products: onerooms,
         menus: ['Home', 'Shop', 'About'],
-        onerooms : onerooms,
       }
     },
     methods : {
       addReport(i) {
-        this.reports[i]++;
+        if (this.products[i].report == undefined) {
+          console.log(this.products[i].report);
+          this.products[i].report = 0;
+        }
+        this.products[i].report++;
       },
-      getDetail(i) {
-        this.product = this.products[i];
-        this.detail = this.details[i];
+      getDetail(product) {
+        this.product = product;
         this.popup = true;
       },
     },
